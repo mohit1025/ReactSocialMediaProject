@@ -62,7 +62,7 @@ function PostListProvider({ children }) {
 
   const addPostsFromServer = (posts) => {
     const normalizedPosts = posts.map(post => {
-      const likeCount = post.reactions?.like ?? 0;
+      const likeCount = post.reactions?.likes ?? 0;
       return {
         ...post,
         reactions: `like: ${likeCount}`

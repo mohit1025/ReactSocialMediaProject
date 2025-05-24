@@ -21,3 +21,14 @@
     margin-left: 10%;
     margin-top: 50px;
 }
+
+.center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 50px 0px;
+    flex-direction: column;
+}
+.welcome-message{
+    margin: 50px 0px;
+}

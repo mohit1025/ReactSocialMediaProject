@@ -5,6 +5,7 @@ const PostListContext = createContext({
   postList: [],
   addPost: () => {},
   deletePost: () => {},
+  addPostsFromServer: () => {}
 });
 
 // ✅ Initial post list
@@ -13,17 +14,17 @@ const Default_Post_List = [
     id: 1,
     title: "Going to Pune",
     body: "New job in Pune",
-    reactions: 1,
+    reactions: "like: 1",
     user_id: "_mystic_musing",
-    tag: ["#job", "#work"],
+    tags: ["#job", "#work"],
   },
   {
     id: 2,
     title: "Going to US",
     body: "New job in US",
-    reactions: 100,
+    reactions: "like: 100",
     user_id: "_mystic_musing",
-    tag: ["#job", "#work"],
+    tags: ["#job", "#work"],
   },
 ];
 
@@ -34,6 +35,8 @@ const PostListReducer = (currentPostList, action) => {
       return currentPostList.filter(post => post.id !== action.payload.postId);
     case "ADD_POST":
       return [action.payload, ...currentPostList];
+    case "ADD_POST_FROM_SERVER":
+      return [...action.payload.posts]; // ✅ fixed
     default:
       return currentPostList;
   }
@@ -43,18 +46,32 @@ const PostListReducer = (currentPostList, action) => {
 function PostListProvider({ children }) {
   const [postList, dispatchPostList] = useReducer(PostListReducer, Default_Post_List);
 
-  const addPost = (user_id, postTitle, postBody, reaction, tag) => {
-    console.log(tag, userId, postBody, postTitle, reaction)
+  const addPost = (user_id, postTitle, postBody, reaction, tags) => {
     dispatchPostList({
       type: "ADD_POST",
       payload: {
         id: Date.now(),
         title: postTitle,
         body: postBody,
-        reactions: reaction, // using reaction directly (as-is)
+        reactions: `like: ${reaction}`, // ensure it's a string
         user_id: user_id,
-        tag: tag,
+        tags: tags,
       },
+    });
+  };
+
+  const addPostsFromServer = (posts) => {
+    const normalizedPosts = posts.map(post => {
+      const likeCount = post.reactions?.like ?? 0;
+      return {
+        ...post,
+        reactions: `like: ${likeCount}`
+      };
+    });
+
+    dispatchPostList({
+      type: "ADD_POST_FROM_SERVER",
+      payload: { posts: normalizedPosts },
     });
   };
 
@@ -68,7 +85,7 @@ function PostListProvider({ children }) {
   };
 
   return (
-    <PostListContext.Provider value={{ postList, addPost, deletePost }}>
+    <PostListContext.Provider value={{ postList, addPost, deletePost, addPostsFromServer }}>
       {children}
     </PostListContext.Provider>
   );

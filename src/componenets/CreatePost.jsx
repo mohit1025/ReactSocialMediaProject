@@ -15,9 +15,9 @@ export default function CreatePost() {
     const postTitle = postTitleElement.current.value;
     const postBody = postBodyElement.current.value;
     const reaction = reactionElement.current.value;
-    const tag = tagElement.current.value.split(" ");
+    const tags = tagElement.current.value.split(" ");
 
-    addPost(user_id, postTitle, postBody, reaction, tag);
+    addPost(user_id, postTitle, postBody, reaction, tags);
     // Clear form inputs
     useridElement.current.value = "";
     postTitleElement.current.value = "";
@@ -78,15 +78,15 @@ export default function CreatePost() {
         />
       </div>
       <div className="mb-3">
-        <label htmlFor="tag" className="form-label">
-          Enter tag
+        <label htmlFor="tags" className="form-label">
+          Enter tags
         </label>
         <input
           ref={tagElement}
           type="text"
           className="form-control"
-          id="tag"
-          placeholder="enter the tag"
+          id="tags"
+          placeholder="enter the tags"
         />
       </div>
       <button type="submit" className="btn btn-primary">

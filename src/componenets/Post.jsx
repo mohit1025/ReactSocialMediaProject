@@ -22,8 +22,8 @@ function Post({ post }) {
         </h5>
         <p className="card-text">{post.body}</p>
 
-        {post.tag.map((tag) => (
-          <span key={tag} className="badge text-bg-primary hashtag">{tag}</span>
+        {post.tags.map((tags) => (
+          <span key={tags} className="badge text-bg-primary hashtag">{tags}</span>
         ))}
         <div className="alert alert-success" role="alert">
           This Post has been reacted by {post.reactions} people
